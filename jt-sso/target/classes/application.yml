@@ -1,0 +1,32 @@
+server:
+  port: 8093
+  servlet:    context-path: /
+spring:  datasource:
+    #引入druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/jtdb?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true
+    username: root
+    password: root
+
+#mybatis-plush配置
+mybatis-plus:  type-aliases-package: com.jt.pojo
+  mapper-locations: classpath:/mybatis/mappers/*.xml
+  configuration:
+    map-underscore-to-camel-case: true  
+#引入日志信息
+logging:
+  level: 
+    com.jt.mapper: debug 
+
+#spring整合dubbo    
+dubbo:
+  scan:
+    basePackages: com.jt  #开启包扫描
+  application:
+    name: provider-user   #定义服务名称  例:学生
+  registry:               #连接注册中心
+    address: zookeeper://192.168.147.130:2182?backup=192.168.147.130:2183,192.168.147.130:2184
+  protocol:
+    name: dubbo       #注册中心信息存储文件夹的名称
+    port: 20880       #每个服务都有自己独立的端口号 例:具体某一个学生
+    #注意：服务的提供者可以有多个，但是服务的名称必须一致，为了区分是哪个服务 使用端口号区分。
